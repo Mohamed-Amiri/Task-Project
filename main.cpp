@@ -1,96 +1,141 @@
 #include <stdio.h>
-#include <stdlib.h>
-#include <string.h>yi
+#include <string.h>
 
 #define MAX_TASKS 100
 
 struct Task {
-	char title [50];
-	char description[100];
-	char duedate[11];
-	char priotity[10];
-	char isCompleted;
+    char title[50];
+    char description[100];
+    char date[11];
+    char priority[10];
+    char isCompleted;
 };
-void displayMenu(){
-	printf("1. Add Task \n");
-	printf("2. Dissplay Task \n");
-	printf("3. Edit Task \n");
-	printf("4. Delet Task \n");
-	printf("5. Filter Task \n");
-	
+
+struct Task tasks[MAX_TASKS];
+int taskCount = 0;
+
+void addTask() {
+    if (taskCount < MAX_TASKS) {  
+        struct Task newTask;
+
+        printf("Enter task title: \n");
+        scanf("%s", newTask.title);
+
+        printf("Enter task description: \n");
+        scanf("%s", newTask.description);
+
+        printf("Enter task due date (YYYY-MM-DD): \n");
+        scanf("%s", newTask.date);
+
+        printf("Enter task priority (High/Low): \n");
+        scanf("%s", newTask.priority);
+
+        tasks[taskCount] = newTask;  
+        taskCount++;  
+        printf("Task added successfully!\n");
+    } else {
+        printf("Task limit reached.\n");
+    }
 }
- 
-void addTask(struct Task Tasks [] , int *taskCount ) {
-	if (*taskCount >= MAX_TASKS){
-		printf("Task limit reached. \n");
-		return;
-	}
-	  printf("Enter task title : ");
-	fgets(Tasks[*taskCount].title, sizeof(Tasks[*taskCount].title), stdin);
-	  printf("Enter task description : ");
-	fgets(Tasks[*taskCount].description, sizeof(Tasks[*taskCount].description), stdin);
-	  printf("Enter due date (YY_MM_DD) : ");
-	fgets(Tasks[*taskCount].duedate, sizeof(Tasks[*taskCount].duedate), stdin);
-	  printf("Enter priotity (High/Low) : ");
-	fgets(Tasks[*taskCount].priotity, sizeof(Tasks[*taskCount].priotity), stdin);
-	
-	Tasks[*taskCount].isCompleted = 0 ;
-	(*taskCount)++;
-	printf("Task added successfully ! \n");
+
+void displayTasks() {
+    printf("\n--- Task List ---\n");
+    for (int i = 0; i < taskCount; i++) {
+        printf("Title: %s, Description: %s, Date: %s, Priority: %s\n",
+               tasks[i].title, tasks[i].description, tasks[i].date, tasks[i].priority);
+    }
 }
 
+void editTask() {
+    int taskIndex;
+    printf("Enter the task number to edit (1 to %d): ", taskCount);
+    scanf("%d", &taskIndex);
+    taskIndex--;  
 
+    if (taskIndex >= 0 && taskIndex < taskCount) {
+        printf("Enter new description: ");
+        scanf("%s", tasks[taskIndex].description);
 
+        printf("Enter new due date (YYYY-MM-DD): ");
+        scanf("%s", tasks[taskIndex].date);
 
+        printf("Enter new priority (High/Low): ");
+        scanf("%s", tasks[taskIndex].priority);
 
+        printf("Task updated successfully!\n");
+    } else {
+        printf("Task not found.\n");
+    }
+}
 
+void deleteTask() {
+    int taskIndex;
+    printf("Enter the task number to delete (1 to %d): ", taskCount);
+    scanf("%d", &taskIndex);
+    taskIndex--;  // Adjust for zero-based index
 
+    if (taskIndex >= 0 && taskIndex < taskCount) {
+        for (int i = taskIndex; i < taskCount - 1; i++) {
+            tasks[i] = tasks[i + 1];
+        }
+        taskCount--;
+        printf("Task deleted successfully.\n");
+    } else {
+        printf("Task not found.\n");
+    }
+}
+
+void displayMenu() {
+    printf("\n--- Main Menu ---\n");
+    printf("1. Add Task\n");
+    printf("2. Display Tasks\n");
+    printf("3. Edit Task\n");
+    printf("4. Delete Task\n");
+    printf("0. Exit\n");
+    printf("Choose an option: ");
+}
 
 int main() {
-   
-   struct Task  tasks[MAX_TASKS];
-          int taskCount = 0;
-    
-     while (1) {
-    	displayMenu();
-    	
-    	int choice ;
-    	scanf("%d", &choice);
-    	 
-    	 
-    	 
-    	switch (choice){
-    		case 1 : 
-    		addTask(tasks, &taskCount);
-    		break;
-    		case 2 : 
-    		displayTasks(tasks, &taskCount);
-    		break;
-    		case 3;
-    	    EdittingTask(tasks, &taskCount);
-    	    break;
-    	    case 4;
-    	    DeletingTask(tasks, &taskCount);
-    	    break;
-    	    case 5;
-    	    FeltringTask(tasks, &taskCount);
-    	     
-    	     return 0;
-    	 default : 
-    	 printf("Invalid choice Please try again \n");
-    		
-   
-    		
-    		
-    	}
-    }
-    		
-		
-    	
-    	
-    	
-    	
-    	
+    int choice;
+
+    do {
+        displayMenu();
+        scanf("%d", &choice);
+
+        switch (choice) {
+            case 1:
+                addTask();
+                break;
+            case 2:
+                displayTasks();
+                break;
+            case 3:
+                editTask();
+                break;
+            case 4:
+                deleteTask();
+                break;
+            case 0:
+                printf("Exiting...\n");
+                break;
+            default:
+                printf("Invalid option. Try again.\n");
+                break;
+        }
+    } while (choice != 0);
+
+    return 0;
+}
+
+
+
+
+
+
+
+
+
+
     	
     	
     	
@@ -106,8 +151,8 @@ int main() {
     
     
     
-    return 0;
-}
+
+
 
 
 
