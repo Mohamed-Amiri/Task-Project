@@ -1,4 +1,4 @@
-#include <stdio.h>
+#include <stdio.h> 
 #include <string.h>
 
 #define MAX_TASKS 100
@@ -15,14 +15,17 @@ struct Task tasks[MAX_TASKS];
 int taskCount = 0;
 
 void addTask() {
+	 
     if (taskCount < MAX_TASKS) {  
         struct Task newTask;
-
+        printf("Task %d\n", taskCount +1);
         printf("Enter task title: \n");
-        scanf("%s", newTask.title);
+        getchar(); 
+        scanf("%[^\n]s", newTask.title); 
 
         printf("Enter task description: \n");
-        scanf("%s", newTask.description);
+        getchar(); 
+        scanf("%[^\n]s", newTask.description); 
 
         printf("Enter task due date (YYYY-MM-DD): \n");
         scanf("%s", newTask.date);
@@ -39,10 +42,25 @@ void addTask() {
 }
 
 void displayTasks() {
-    printf("\n--- Task List ---\n");
+    printf("\n----- Task List -----\n");
     for (int i = 0; i < taskCount; i++) {
-        printf("Title: %s, Description: %s, Date: %s, Priority: %s\n",
+        printf("Title: %s\n" "Description: %s\n" "Date: %s\n" "Priority: %s\n",
                tasks[i].title, tasks[i].description, tasks[i].date, tasks[i].priority);
+    }
+}
+
+void filterTasks() {
+    char filterPriority[10];
+    printf("Enter priority to filter by (High/Low): ");
+    getchar(); 
+    scanf("%[^\n]s", filterPriority); 
+
+    printf("\n------- Filtered Task List (Priority: %s) -------\n", filterPriority);
+    for (int i = 0; i < taskCount; i++) {
+        if (strcmp(tasks[i].priority, filterPriority) == 0) {
+            printf("Title: %s, Description: %s, Date: %s, Priority: %s\n",
+                   tasks[i].title, tasks[i].description, tasks[i].date, tasks[i].priority);
+        }
     }
 }
 
@@ -54,7 +72,8 @@ void editTask() {
 
     if (taskIndex >= 0 && taskIndex < taskCount) {
         printf("Enter new description: ");
-        scanf("%s", tasks[taskIndex].description);
+        getchar(); 
+        scanf("%[^\n]s", tasks[taskIndex].description); 
 
         printf("Enter new due date (YYYY-MM-DD): ");
         scanf("%s", tasks[taskIndex].date);
@@ -72,7 +91,7 @@ void deleteTask() {
     int taskIndex;
     printf("Enter the task number to delete (1 to %d): ", taskCount);
     scanf("%d", &taskIndex);
-    taskIndex--;  // Adjust for zero-based index
+    taskIndex--;  
 
     if (taskIndex >= 0 && taskIndex < taskCount) {
         for (int i = taskIndex; i < taskCount - 1; i++) {
@@ -86,13 +105,18 @@ void deleteTask() {
 }
 
 void displayMenu() {
-    printf("\n--- Main Menu ---\n");
+    printf("\n_______ Main Menu _______\n");
+    printf("\n");
     printf("1. Add Task\n");
     printf("2. Display Tasks\n");
-    printf("3. Edit Task\n");
-    printf("4. Delete Task\n");
+    printf("3. Filter Tasks\n"); 
+    printf("4. Edit Task\n");
+    printf("5. Delete Task\n");
     printf("0. Exit\n");
-    printf("Choose an option: ");
+    printf("\n");
+    printf("---- Choose an option: ----\n");
+   
+    
 }
 
 int main() {
@@ -110,9 +134,12 @@ int main() {
                 displayTasks();
                 break;
             case 3:
-                editTask();
+                filterTasks(); 
                 break;
             case 4:
+                editTask();
+                break;
+            case 5:
                 deleteTask();
                 break;
             case 0:
@@ -126,38 +153,4 @@ int main() {
 
     return 0;
 }
-
-
-
-
-
-
-
-
-
-
-    	
-    	
-    	
-    	
-    	
-    	
-    	
-
-    
-    
-    
-    
-    
-    
-    
-
-
-
-
-
-
-
-
-
 
