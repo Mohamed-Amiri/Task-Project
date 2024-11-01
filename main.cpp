@@ -14,24 +14,52 @@ struct Task {
 struct Task tasks[MAX_TASKS];
 int taskCount = 0;
 
-void addTask() {
-	 
-    if (taskCount < MAX_TASKS) {  
+void addTask() { 
+    if (taskCount < MAX_TASKS) { 
         struct Task newTask;
-        printf("Task %d\n", taskCount +1);
+        printf("Task %d\n", taskCount + 1);
+
         printf("Enter task title: \n");
         getchar(); 
-        scanf("%[^\n]s", newTask.title); 
+        scanf("%[^\n]s", newTask.title);
 
         printf("Enter task description: \n");
         getchar(); 
-        scanf("%[^\n]s", newTask.description); 
+        scanf("%[^\n]s", newTask.description);
 
-        printf("Enter task due date (YYYY-MM-DD): \n");
-        scanf("%s", newTask.date);
+        
+        int day, month, year;
+        while (1) {
+            printf("Enter task due date (DD-MM-YYYY): \n");
+            scanf("%s", newTask.date);
 
-        printf("Enter task priority (High/Low): \n");
-        scanf("%s", newTask.priority);
+           
+            if (sscanf(newTask.date, "%d-%d-%d", &day, &month, &year) == 3) {
+               
+                
+                     if (day >= 1 && day <= 31 && month <= 12 && day >= 1 && day <= 31) {
+                    break; 
+                } else {
+                    printf("Invalid date. Please enter a valid date (DD-MM-YYYY).\n");
+                }
+            } else {
+                printf("Invalid date format. Please enter date in format (DD-MM-YYYY).\n");
+            }
+
+ 
+            while (getchar() != '\n');
+        }
+
+        while (1) {
+            printf("Enter task priority (High/Low): \n");
+            scanf("%s", newTask.priority);
+            if (strcmp(newTask.priority, "High") == 0 || strcmp(newTask.priority, "Low") == 0) {
+                break; 
+            } else {
+                printf("Invalid priority. Please enter either 'High' or 'Low'.\n");
+                while (getchar() != '\n'); 
+            }
+        }
 
         tasks[taskCount] = newTask;  
         taskCount++;  
@@ -77,10 +105,9 @@ void editTask() {
 
         printf("Enter new due date (YYYY-MM-DD): ");
         scanf("%s", tasks[taskIndex].date);
-
+         
         printf("Enter new priority (High/Low): ");
         scanf("%s", tasks[taskIndex].priority);
-
         printf("Task updated successfully!\n");
     } else {
         printf("Task not found.\n");
@@ -115,6 +142,7 @@ void displayMenu() {
     printf("0. Exit\n");
     printf("\n");
     printf("---- Choose an option: ----\n");
+    
    
     
 }
@@ -125,9 +153,8 @@ int main() {
     do {
         displayMenu();
         scanf("%d", &choice);
-
         switch (choice) {
-            case 1:
+            case 1 :
                 addTask();
                 break;
             case 2:
